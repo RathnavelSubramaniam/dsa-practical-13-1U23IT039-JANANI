@@ -1,35 +1,35 @@
 import java.io.*;
 import java.util.*;
-class stack 
+class stack
 {
     int size;
     int item[];
     int top;
-    public stack() 
+    public stack()
     {
         size = 100;
         item = new int[size];
         top = -1;
     }
-    public void push(int ele) 
+    public void push(int ele)
     {
-        if (top == (size - 1)) 
+        if (top == (size - 1))
         {
             System.out.println("Stack Overflow");
-        } else 
+        } else
         {
             top++;
             item[top] = ele;
           //  System.out.println("Inserted Element:"+ele);
         }
     }
-    public int pop() 
+    public int pop()
     {
-        if (top == -1) 
+        if (top == -1)
         {
             System.out.println("Invalid Postfix string; Operators are given more than operands");
             return (-1);
-        } else 
+        } else
         {
             int x = item[top];
             top--;
@@ -37,22 +37,22 @@ class stack
             return (x);
         }
     }
-    public int peek() 
+    public int peek()
     {
-        if (top == -1) 
+        if (top == -1)
         {
             System.out.println("No Elements");
             return (-1);
         } else
             return (item[top]);
     }
-    public void display() 
+    public void display()
     {
         System.out.println();
-        if (top == -1) 
+        if (top == -1)
         {
             System.out.println("No Elements");
-        } else 
+        } else
         {
             System.out.println("Stack is");
             for (int i = 0; i <= top; i++)
@@ -67,191 +67,69 @@ class stack
         return false;
     }
 }
-class evalpostfix 
+class evalpostfix
 {
     stack st = new stack();
     String postfix;
-    public evalpostfix(String str) 
+    public evalpostfix(String str)
     {
         postfix = str;
     }
- public boolean
-isOperand(char ch)
-
-
+    public boolean isOperand(char ch)
     {
-
-
-// TYPE YOUR CODE CODE
-
-
-        if (ch >= '0' && ch <=
-'9')
-
-
-            return true;
-
-
-        else
-
-
-            return false;
-
-
+     
+    return Character.isDigit(ch);
+       
     }
-
-
     public int eval()
-
     {
-
-// TYPE YOUR CODE CODE
-
-
-        char po[] = postfix.toCharArray();
-
-
-        int i = 0, a, b;
-
-
-        while (i < po.length)
-
-
-        {
-
-
-            if (isOperand(po[i]))
-
-
-                st.push(po[i] - '0');
-
-
-            else
-
-
+    for (int i = 0; i < postfix.length(); i++)
+     {
+            char ch = postfix.charAt(i);
+            if (isOperand(ch))
             {
-
-
-              //  st.display();
-
-
-                a = st.pop();
-
-
-                b = st.pop();
-
-
-            //  
-System.out.println("a:"+a);
-
-
-              //  System.out.println("b:"+b);
-
-
-               if((a!=-1)&&(b!=-1))
-
-
-               {
-
-
-                switch (po[i])
-
-
-                {
-
-
+                st.push(ch - '0');
+            }
+        else {
+                int operand2 = st.pop();
+                int operand1 = st.pop();
+                int result = 0;
+switch (ch) {
                     case '+':
-
-
-                        st.push(a + b);
-
-
+                        result = operand1 + operand2;
                         break;
-
-
                     case '-':
-
-
-                        st.push(b - a);
-
-
+                        result = operand1 - operand2;
                         break;
-
-
                     case '*':
-
-
-                        st.push(a * b);
-
-
+                        result = operand1 * operand2;
                         break;
-
-
                     case '/':
-
-
-                        st.push(b / a);
-
-
-                        break;
-
-
-                    case '%':
-
-
-                        st.push(b % a);
-
-
-                        break;
-
-
+                        if (operand2 != 0) {
+                            result = operand1 / operand2;
+                        } else {
+                            System.out.println("Division by zero error");
+                            return -1;
+                        }
+                         break;
                     default:
-
-
-                    break;
-
-
+                        System.out.println("Invalid operator in postfix expression");
+                        return -1;
                 }
-
-
-               
-
-
+                st.push(result);
             }
-
-
-          else
-
-
-          return -1;
-
-
-            }
-
-
-            i++;
-
-
         }
-
-
-       int res_val=st.pop();
-
-
-       if(st.isEmpty())
-
-
-       return res_val;
-
-
-       else return -1;
-
-
-    }
+        if (!st.isEmpty()) {
+            return st.pop();
+        } else {
+            System.out.println("Invalid Postfix Expression");
+            return -1;
+        }
+     }
 }
-public class Postfixeval 
+public class Postfixeval
 {
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         Scanner sc= new Scanner(System.in);
         System.out.println("Enter postfix string");
